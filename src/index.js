@@ -3,10 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { RequestProvider } from 'react-request-hook';
+import axios from 'axios';
+
+const axiosInstance = axios.create({
+  baseURL: 'https://api.themoviedb.org/3/'
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <RequestProvider value={axiosInstance}>
+      <App />
+    </RequestProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
