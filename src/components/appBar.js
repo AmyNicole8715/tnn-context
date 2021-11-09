@@ -6,7 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import  SetAppLanguage  from './setLanguage.js';
 
-import SortByMenu from './sortBy';
+import GenreFilterMenu from './sortByGenre.js';
 
 // currently an app bar with title, a sort by menu, and a language menu
 
@@ -29,7 +29,7 @@ export default function NNTopBar() {
           <SetAppLanguage />
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <SortByMenu />
+            <GenreFilterMenu />
           </Box>
         </Toolbar>
       </AppBar>

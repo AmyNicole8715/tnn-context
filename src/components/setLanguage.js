@@ -5,8 +5,8 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import { styled } from '@mui/material/styles';
 
 import { languageOptions } from './languages/index.js'; 
-import { Text, LanguageContext } from '../context/Language.js';
-
+import { LanguageContext } from '../context/LanguageContext.js';
+import { GenresContext, useGenres } from '../context/GenreContext.js';
 
 const StyledButtonGroup = styled(ButtonGroup)({
   display: 'flex',
@@ -29,11 +29,15 @@ const StyledButton = styled(Button)({
 });
 
 export default function SetAppLanguage() {
-  const {userLanguage, userLanguageChange } = useContext(LanguageContext);
-
   
-  const handleLanguageChange = (e) => userLanguageChange(e.target.value);
-
+  const {userLanguage, userLanguageChange } = useContext(LanguageContext);
+  
+  const { getGenres } = useContext(GenresContext);
+  
+  const handleLanguageChange = (e) => {
+    console.log("handleLanguageChange")
+    userLanguageChange(e.target.value);
+  }
 
 
   return (
