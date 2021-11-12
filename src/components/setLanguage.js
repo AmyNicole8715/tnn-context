@@ -31,11 +31,9 @@ const StyledButton = styled(Button)({
 export default function SetAppLanguage() {
   
   const {userLanguage, userLanguageChange } = useContext(LanguageContext);
-  
-  const { getGenres } = useContext(GenresContext);
+  const { genres } = useContext(GenresContext);
   
   const handleLanguageChange = (e) => {
-    console.log("handleLanguageChange")
     userLanguageChange(e.target.value);
   }
 

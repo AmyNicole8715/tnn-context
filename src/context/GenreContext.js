@@ -1,5 +1,4 @@
-import { useContext, useEffect, useReducer, createContext } from 'react';
-import { useResource } from 'react-request-hook';
+import { useState, useContext, useEffect, useReducer, createContext } from 'react';
 
 import { LanguageContext } from './LanguageContext';
 import {
@@ -10,6 +9,8 @@ import {
 import { reducer } from '../reducers/reducers';
 import { TMDB_API_KEY } from '../apis/tmdb/key.js';
 
+const API_URL = 'https://api.themoviedb.org/3/';
+
 // Context for Genres
 
 
@@ -17,32 +18,31 @@ const initialState = {
     genres: [],
 };
 
-export const GenresContext = createContext({
-    getGenres: () => {},
-});
+export const GenresContext = createContext(initialState);
 
 const GenresProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    const { userLanguage } = useContext(LanguageContext);
+    const { dictionary } = useContext(LanguageContext);
 
-    const { genres, getGenres } = useResource(() => ({
-        url: `https://api.themoviedb.org/3/genre/movie/list?api_key=${TMDB_API_KEY}&language=${userLanguage}`,
-        method: 'GET',
-    }));
+    const fetchGenres = async url => {
+        dispatch({ type: SET_GENRES, payload: [] });
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            dispatch({ 
+                type: SET_GENRES, 
+                payload: data.genres 
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
 
     useEffect(() => {
-        if (genres) {
-            dispatch({ type: SET_GENRES, payload: genres.genres });
-        }
-    }, [genres]);
-
-    function handleId(id) {
-        dispatch({ type: SET_GENRE_ID, payload: id });
-    }
-
-    const handleName = name => {
-        dispatch({ type: SET_GENRE_NAME, payload: name });
-    };
+        fetchGenres(`${API_URL}genre/movie/list?api_key=${TMDB_API_KEY}&language=${dictionary.setResultLang}`);
+    }, [dictionary.setResultLang]);
 
 
 
@@ -50,12 +50,8 @@ const GenresProvider = ({ children }) => {
     return (
         <GenresContext.Provider
             value={{
-                getGenres,
-                genres,
-                state,
-                dispatch,
-                handleId,
-                handleName,
+                ...state,
+                fetchGenres,
             }}
         >
             {children}

@@ -27,7 +27,7 @@ export default function GenreFilterMenu() {
           </Button>
           <Menu {...bindMenu(popupState)}> 
           {genres?.map((genres) => (
-            <MenuItem key={genres.id} onClick={popupState.close}>{genres.name}</MenuItem>
+            <MenuItem key={genres.id} value={genres.id} onClick={popupState.close}>{genres.name}</MenuItem>
           ))}
           </Menu>
         </React.Fragment>
