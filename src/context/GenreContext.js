@@ -1,10 +1,9 @@
-import { useState, useContext, useEffect, useReducer, createContext } from 'react';
+import { useContext, useEffect, useReducer, createContext } from 'react';
 
 import { LanguageContext } from './LanguageContext';
 import {
     SET_GENRES,
     SET_GENRE_ID,
-    SET_GENRE_NAME,
 } from '../actions/types';
 import { reducer } from '../reducers/reducers';
 import { TMDB_API_KEY } from '../apis/tmdb/key.js';
@@ -16,11 +15,12 @@ const API_URL = 'https://api.themoviedb.org/3/';
 
 const initialState = {
     genres: [],
+    setGenre: '',
 };
 
 export const GenresContext = createContext(initialState);
 
-const GenresProvider = ({ children }) => {
+export function GenresProvider ({ children }) {
     const [state, dispatch] = useReducer(reducer, initialState);
     const { dictionary } = useContext(LanguageContext);
 
@@ -37,9 +37,7 @@ const GenresProvider = ({ children }) => {
             console.log(error);
         }
     };
-
-
-
+    
     useEffect(() => {
         fetchGenres(`${API_URL}genre/movie/list?api_key=${TMDB_API_KEY}&language=${dictionary.setResultLang}`);
     }, [dictionary.setResultLang]);

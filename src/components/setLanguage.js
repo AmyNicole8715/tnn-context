@@ -6,7 +6,6 @@ import { styled } from '@mui/material/styles';
 
 import { languageOptions } from './languages/index.js'; 
 import { LanguageContext } from '../context/LanguageContext.js';
-import { GenresContext, useGenres } from '../context/GenreContext.js';
 
 const StyledButtonGroup = styled(ButtonGroup)({
   display: 'flex',
@@ -31,7 +30,6 @@ const StyledButton = styled(Button)({
 export default function SetAppLanguage() {
   
   const {userLanguage, userLanguageChange } = useContext(LanguageContext);
-  const { genres } = useContext(GenresContext);
   
   const handleLanguageChange = (e) => {
     userLanguageChange(e.target.value);
