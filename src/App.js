@@ -7,6 +7,7 @@ import { CssBaseline } from '@mui/material';
 import { Text, LanguageProvider } from './context/LanguageContext';
 import GenresProvider from './context/GenreContext';
 
+import MovieList from './components/MovieList';
 import NNTopBar from './components/appBar';
 import theme from './theme/theme';
 
@@ -20,7 +21,7 @@ function App() {
             <ThemeProvider theme={theme}>
               <CssBaseline>
                 <NNTopBar />
-                <Text tid="changeLanguage"/>
+                <MovieList />
               </CssBaseline>
             </ThemeProvider>
           </NNStyledProvider>

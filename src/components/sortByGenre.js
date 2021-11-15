@@ -11,14 +11,12 @@ import { Text } from '../context/LanguageContext.js';
 // it will need to upon selection also update the selected genre in the state
 
 export default function GenreFilterMenu() {
-
-  const { genres } = useGenres();
-
   
+  const { genres, userGenresChange } = useGenres();
 
   const doBothThings = (popupState, genres) => {
     popupState.close(genres.id)
-    console.log(genres.id);
+    userGenresChange(genres.id)
   }
 
   return (
