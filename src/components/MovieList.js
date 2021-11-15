@@ -9,15 +9,16 @@ const StyledPaper = styled(Paper)({
     margin: '1rem',
     display: 'flex',
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
     alignItems: 'start',
     backgroundColor: '#171515',
     color: 'white',
+    overflow: 'hidden',
+    overflowX: 'scroll',
 });
 
 const StyledImg = styled('img')({
-    width: '150px',
+    width: '350px',
     height: 'auto',
 });
 
@@ -25,7 +26,7 @@ const StyledDiv = styled('div')({
     position: 'relative',
     margin: '0',
     maxHeight: '525px',
-    overflow: 'hidden',
+    boxSizing: 'content-box',
     '&:hover': {
         cursor: 'pointer',
     },
@@ -54,7 +55,7 @@ export default function MovieList() {
                 <StyledDiv>
                     <StyledImg src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
                     <StyledSpan>
-                        <Typography key={movie.id} variant="h6">
+                        <Typography key={movie.id} value={movie.id} variant="h6">
                             {movie.title}
                             ({movie.release_date})
                         </Typography>
