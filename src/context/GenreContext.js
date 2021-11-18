@@ -18,6 +18,7 @@ const initialState = {
     genres: [],
     genreId: '',
     movies: [],
+    movieId: '',
 };
 
 export const GenresContext = createContext();

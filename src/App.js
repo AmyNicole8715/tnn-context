@@ -1,12 +1,14 @@
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import { StylesProvider } from '@mui/styles';
 import { ThemeProvider as NNStyledProvider } from 'styled-components';
 import { CssBaseline } from '@mui/material';
 
+
 import { Text, LanguageProvider } from './context/LanguageContext';
 import GenresProvider from './context/GenreContext';
-
 import MovieList from './components/MovieList';
 import NNTopBar from './components/appBar';
 import theme from './theme/theme';
@@ -21,7 +23,7 @@ function App() {
             <ThemeProvider theme={theme}>
               <CssBaseline>
                 <NNTopBar />
-                <MovieList />
+                <MovieList />   
               </CssBaseline>
             </ThemeProvider>
           </NNStyledProvider>

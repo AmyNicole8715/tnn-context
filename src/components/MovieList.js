@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { Paper, Typography } from '@mui/material';
+import { useState } from 'react';
+import { Paper, Typography, Popover } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { useGenres } from '../context/GenreContext';
@@ -46,20 +46,79 @@ const StyledSpan = styled('span')({
     fontWeight: 'bold',
 });
 
+const StyledPopover = styled(Popover)({
+    backgroundColor: '#171515',
+    color: 'white',
+    padding: '1rem',
+    margin: '1rem',
+    display: 'flex',
+    width: '400px',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'start',
+});
+
+
 export default function MovieList() {
     const { movies } = useGenres();
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handlePopoverOpen = (event) => {
+        console.log(event);
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handlePopoverClose = () => {
+        setAnchorEl(null);
+    };
     
+    const open = Boolean(anchorEl);
+
     return (
         <StyledPaper>
             {movies.map(movie => (
                 <StyledDiv>
-                    <StyledImg src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
+                    <StyledImg 
+                        key={movie.id}
+                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
+                        alt={movie.title}
+                        aria-owns={open ? 'mouse-over-popover' : undefined}
+                        aria-haspopup="true"
+                        onMouseEnter={() => handlePopoverOpen(movie.id)}
+                        onMouseLeave={handlePopoverClose} 
+                    />
                     <StyledSpan>
-                        <Typography key={movie.id} value={movie.id} variant="h6">
+                        <Typography value={movie.id} variant="h6">
                             {movie.title}
                             ({movie.release_date})
                         </Typography>
                     </StyledSpan>
+                    <StyledPopover
+                        id="mouse-over-popover"
+                        sx={{
+                            pointerEvents: 'none',
+                        }}
+                        open={movie.id === anchorEl}
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                          }}
+                          transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left',
+                          }}
+                          onClose={handlePopoverClose}
+                          disableRestoreFocus
+                        >
+                        <Typography variant="h6">
+                            {movie.title}
+                            ({movie.release_date})
+                        </Typography>
+                        <Typography variant="body1">
+                            {movie.overview}
+                        </Typography>
+                    </StyledPopover>
                 </StyledDiv>
             ))}
         </StyledPaper>
