@@ -6,7 +6,8 @@ import {
     SET_MOVIES,
     SET_MOVIE,
     SET_MOVIE_ID,
-    SET_MOVIE_NAME,
+    SET_MOVIE_TITLE,
+    SET_MOVIE_TRAILER,
 } from '../actions/types';
 
 export const reducer = (state = {}, action) => {
@@ -25,8 +26,10 @@ export const reducer = (state = {}, action) => {
             return { ...state, movie: action.payload };
         case SET_MOVIE_ID:
             return { ...state, movieId: action.payload };
-        case SET_MOVIE_NAME:
-            return { ...state, movieName: action.payload };
+        case SET_MOVIE_TITLE:
+            return { ...state, movieTitle: action.payload };
+        case SET_MOVIE_TRAILER:
+            return { ...state, movieTrailer: action.payload };
         default:
             return state;
     }

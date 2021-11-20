@@ -6,5 +6,9 @@ export const SET_GENRE_NAME = 'SET_GENRE_NAME';
 export const SET_MOVIES = 'SET_MOVIES';
 export const SET_MOVIE = 'SET_MOVIE';
 export const SET_MOVIE_ID = 'SET_MOVIE_ID';
-export const SET_MOVIE_NAME = 'SET_MOVIE_NAME';
+export const SET_MOVIE_TITLE = 'SET_MOVIE_TITLE';
+export const SET_MOVIE_POSTER = 'SET_MOVIE_POSTER';
+export const SET_MOVIE_OVERVIEW = 'SET_MOVIE_OVERVIEW';
+export const SET_MOVIE_RELEASE_DATE = 'SET_MOVIE_RELEASE_DATE';
+export const SET_MOVIE_TRAILER = 'SET_MOVIE_TRAILER';
 

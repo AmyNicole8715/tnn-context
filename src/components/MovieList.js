@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ReactPlayer from 'react-player';
 import { Paper, Typography, Popover } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -20,6 +21,7 @@ const StyledPaper = styled(Paper)({
 const StyledImg = styled('img')({
     width: '350px',
     height: 'auto',
+    position: 'relative',
 });
 
 const StyledDiv = styled('div')({
@@ -49,23 +51,29 @@ const StyledSpan = styled('span')({
 const StyledPopover = styled(Popover)({
     backgroundColor: '#171515',
     color: 'white',
-    padding: '1rem',
-    margin: '1rem',
+    padding: '2rem',
+    margin: '2rem',
     display: 'flex',
     width: '400px',
+    height: '750px',
     flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'start',
+    justifyContent: 'center',
+    position: 'absolute',
 });
 
 
 export default function MovieList() {
-    const { movies } = useGenres();
+    const { movies, movieTitleChange, movieTrailer } = useGenres();
     const [anchorEl, setAnchorEl] = useState(null);
+    
+    const handleMovieTitle = (event) => {
+        movieTitleChange(event);
+    };
+
 
     const handlePopoverOpen = (event) => {
         console.log(event);
-        setAnchorEl(event.currentTarget);
+        setAnchorEl(event);
     };
 
     const handlePopoverClose = () => {
@@ -82,10 +90,12 @@ export default function MovieList() {
                         key={movie.id}
                         src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
                         alt={movie.title}
+                        value={movie.title} // is this what is needed to pass title to the popover and thus trailer?
                         aria-owns={open ? 'mouse-over-popover' : undefined}
                         aria-haspopup="true"
                         onMouseEnter={() => handlePopoverOpen(movie.id)}
-                        onMouseLeave={handlePopoverClose} 
+                        onMouseOver={() => handleMovieTitle(movie.title)}
+                        onMouseLeave={() => handlePopoverClose(movie.id)} 
                     />
                     <StyledSpan>
                         <Typography value={movie.id} variant="h6">
@@ -94,6 +104,7 @@ export default function MovieList() {
                         </Typography>
                     </StyledSpan>
                     <StyledPopover
+                        value={movie.title}
                         id="mouse-over-popover"
                         sx={{
                             pointerEvents: 'none',
@@ -108,9 +119,18 @@ export default function MovieList() {
                             vertical: 'top',
                             horizontal: 'left',
                           }}
-                          onClose={handlePopoverClose}
-                          disableRestoreFocus
-                        >
+                        onMouseLeave={handlePopoverClose}
+                        disableRestoreFocus
+                    >
+                        <ReactPlayer
+                            url={`https://www.youtube.com/watch?v=${movieTrailer}`}
+                            height='100%'
+                            width='max-width'
+                            controls={true}
+                            playing={true}
+                            loop={true}
+                            volume={0.5}
+                        />
                         <Typography variant="h6">
                             {movie.title}
                             ({movie.release_date})

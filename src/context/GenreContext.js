@@ -5,9 +5,12 @@ import {
     SET_GENRES,
     SET_GENRE_ID,
     SET_MOVIES,
+    SET_MOVIE_TITLE,
+    SET_MOVIE_TRAILER,
 } from '../actions/types';
 import { reducer } from '../reducers/reducers';
 import { TMDB_API_KEY } from '../apis/tmdb/key.js';
+import youtube from '../apis/youtube/youtube';
 
 const API_URL = 'https://api.themoviedb.org/3/';
 
@@ -19,6 +22,8 @@ const initialState = {
     genreId: '',
     movies: [],
     movieId: '',
+    movieTitle: '',
+    movieTrailer: '',
 };
 
 export const GenresContext = createContext();
@@ -26,6 +31,7 @@ export const GenresContext = createContext();
 export function GenresProvider ({ children }) {
     const [state, dispatch] = useReducer(reducer, initialState);
     const [genreId, setGenreId] = useState('');
+    const [movieTitle, setMovieTitle] = useState('');
     const { dictionary } = useContext(LanguageContext);
 
     const fetchGenres = async url => {
@@ -72,6 +78,37 @@ export function GenresProvider ({ children }) {
     }, [genreId, dictionary.setResultLang]);
     console.log(state);
 
+    const movieTitleChange = (selected) => {
+        console.log(selected + ' selected')
+        setMovieTitle(selected);
+        dispatch ({ type: SET_MOVIE_TITLE, payload: selected });
+    };
+
+
+    const fetchMovieTrailer = async (term) => {
+        try {
+            const response = await youtube.get('/search', {
+                params: {
+                    q: term,
+                    },
+                });
+            dispatch({
+                type: SET_MOVIE_TRAILER,
+                payload: response.data.items[0].id.videoId,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        if (movieTitle !== '') {
+            fetchMovieTrailer(movieTitle);
+        }
+    }, [movieTitle]);
+    
+
+
     // const provider = {
     //     userLanguage,
     //     dictionary: dictionaryList[userLanguage],
@@ -90,6 +127,7 @@ export function GenresProvider ({ children }) {
                 ...state,
                 fetchGenres,
                 userGenresChange,
+                movieTitleChange,
             }}
         >
             {children}
