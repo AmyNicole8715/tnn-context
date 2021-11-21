@@ -80,7 +80,7 @@ export function GenresProvider ({ children }) {
 
     const movieTitleChange = (selected) => {
         console.log(selected + ' selected')
-        setMovieTitle(selected);
+        setMovieTitle(selected + ` ${dictionary.language} trailer`);
         dispatch ({ type: SET_MOVIE_TITLE, payload: selected });
     };
 
