@@ -4,7 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state'; 
 
-import { useGenres } from '../context/GenreContext';
+import { useData } from '../context/DataContext';
 import { Text } from '../context/LanguageContext.js';
 
 // this needs to build menu from an array from genres.id and display genres.name in menu, and then sort movies by that, and then display the sorted movies
@@ -12,7 +12,7 @@ import { Text } from '../context/LanguageContext.js';
 
 export default function GenreFilterMenu() {
   
-  const { genres, userGenresChange } = useGenres();
+  const { genres, userGenresChange } = useData();
 
   const doBothThings = (popupState, genres) => {
     popupState.close(genres.id)

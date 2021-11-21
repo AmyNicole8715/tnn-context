@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player';
 import { Paper, Typography, Popover } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-import { useGenres } from '../context/GenreContext';
+import { useData } from '../context/DataContext';
 
 const StyledPaper = styled(Paper)({
     padding: '1rem',
@@ -53,9 +53,10 @@ const StyledPopover = styled(Popover)({
     color: 'white',
     padding: '2rem',
     margin: '2rem',
+    marginTop: '4rem',
     display: 'flex',
     width: '400px',
-    height: '750px',
+    height: '500px',
     flexDirection: 'column',
     justifyContent: 'center',
     position: 'absolute',
@@ -63,7 +64,7 @@ const StyledPopover = styled(Popover)({
 
 
 export default function MovieList() {
-    const { movies, movieTitleChange, movieTrailer } = useGenres();
+    const { movies, movieTitleChange, movieTrailer } = useData();
     const [anchorEl, setAnchorEl] = useState(null);
     
     const handleMovieTitle = (event) => {
@@ -112,12 +113,12 @@ export default function MovieList() {
                         open={movie.id === anchorEl}
                         anchorEl={anchorEl}
                         anchorOrigin={{
-                            vertical: 'bottom',
+                            vertical: 'top',
                             horizontal: 'left',
                           }}
                           transformOrigin={{
                             vertical: 'top',
-                            horizontal: 'left',
+                            horizontal: 'center',
                           }}
                         onMouseLeave={handlePopoverClose}
                         disableRestoreFocus

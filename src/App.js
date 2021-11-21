@@ -1,14 +1,12 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import { StylesProvider } from '@mui/styles';
 import { ThemeProvider as NNStyledProvider } from 'styled-components';
 import { CssBaseline } from '@mui/material';
 
 
-import { Text, LanguageProvider } from './context/LanguageContext';
-import GenresProvider from './context/GenreContext';
+import { LanguageProvider } from './context/LanguageContext';
+import DataProvider from './context/DataContext';
 import MovieList from './components/MovieList';
 import NNTopBar from './components/appBar';
 import theme from './theme/theme';
@@ -17,7 +15,7 @@ import theme from './theme/theme';
 function App() {
   return (
     <LanguageProvider>
-      <GenresProvider>
+      <DataProvider>
         <StylesProvider injectFirst>
           <NNStyledProvider theme={theme}>
             <ThemeProvider theme={theme}>
@@ -28,7 +26,7 @@ function App() {
             </ThemeProvider>
           </NNStyledProvider>
         </StylesProvider>
-      </GenresProvider>
+      </DataProvider>
     </LanguageProvider>   
   );
 }

@@ -21,19 +21,19 @@ const initialState = {
     genres: [],
     genreId: '',
     movies: [],
-    movieId: '',
     movieTitle: '',
     movieTrailer: '',
 };
 
-export const GenresContext = createContext();
+export const DataContext = createContext();
 
-export function GenresProvider ({ children }) {
+export function DataProvider ({ children }) {
     const [state, dispatch] = useReducer(reducer, initialState);
     const [genreId, setGenreId] = useState('');
     const [movieTitle, setMovieTitle] = useState('');
     const { dictionary } = useContext(LanguageContext);
 
+    // fetch genres using TMDB API and selected language
     const fetchGenres = async url => {
         dispatch({ type: SET_GENRES, payload: [] });
         try {
@@ -58,6 +58,7 @@ export function GenresProvider ({ children }) {
             dispatch ({ type: SET_GENRE_ID, payload: selected });
         };
 
+    // fetch movies from TMDB
     const fetchMovies = async (url) => {
         try {
             const response = await fetch(url);
@@ -78,13 +79,14 @@ export function GenresProvider ({ children }) {
     }, [genreId, dictionary.setResultLang]);
     console.log(state);
 
+    // change movie title for youtube search
     const movieTitleChange = (selected) => {
         console.log(selected + ' selected')
         setMovieTitle(selected + ` ${dictionary.language} trailer`);
         dispatch ({ type: SET_MOVIE_TITLE, payload: selected });
     };
 
-
+    // fetches movie trailer from youtube
     const fetchMovieTrailer = async (term) => {
         try {
             const response = await youtube.get('/search', {
@@ -101,28 +103,17 @@ export function GenresProvider ({ children }) {
         }
     };
 
+    // checks if movie title is empty if not, then it fetches movie trailer
     useEffect(() => {
         if (movieTitle !== '') {
             fetchMovieTrailer(movieTitle);
         }
     }, [movieTitle]);
-    
-
-
-    // const provider = {
-    //     userLanguage,
-    //     dictionary: dictionaryList[userLanguage],
-    //     userLanguageChange: selected => {
-    //       const newLanguage = languageOptions[selected] ? selected : 'enUS'
-    //       setUserLanguage(newLanguage);
-    //       window.localStorage.setItem('rcml-lang', newLanguage);
-    //     }
-    //   };
 
 
 
     return (
-        <GenresContext.Provider
+        <DataContext.Provider
             value={{
                 ...state,
                 fetchGenres,
@@ -131,12 +122,12 @@ export function GenresProvider ({ children }) {
             }}
         >
             {children}
-        </GenresContext.Provider>
+        </DataContext.Provider>
     );
 };
 
-export const useGenres = () => {
-    return useContext(GenresContext);
+export const useData = () => {
+    return useContext(DataContext);
 };
 
-export default GenresProvider;
+export default DataProvider;
