@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ReactPlayer from 'react-player';
 import { Paper, Typography, Popover } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 
 import { useData } from '../context/DataContext';
 
@@ -64,6 +64,7 @@ const StyledPopover = styled(Popover)({
 
 
 export default function MovieList() {
+    const { theme } = useTheme();
     const { movies, movieTitleChange, movieTrailer } = useData();
     const [anchorEl, setAnchorEl] = useState(null);
     
@@ -94,9 +95,9 @@ export default function MovieList() {
                         value={movie.title} // is this what is needed to pass title to the popover and thus trailer?
                         aria-owns={open ? 'mouse-over-popover' : undefined}
                         aria-haspopup="true"
-                        onMouseEnter={() => handlePopoverOpen(movie.id)}
+                        onClick={() => handlePopoverOpen(movie.id)}
                         onMouseOver={() => handleMovieTitle(movie.title)}
-                        onMouseLeave={() => handlePopoverClose(movie.id)} 
+                        onDoubleClick={() => handlePopoverClose(movie.id)} 
                     />
                     <StyledSpan>
                         <Typography value={movie.id} variant="h6">
@@ -120,8 +121,7 @@ export default function MovieList() {
                             vertical: 'top',
                             horizontal: 'center',
                           }}
-                        onMouseLeave={handlePopoverClose}
-                        disableRestoreFocus
+                        onDoubleClick={() => handlePopoverClose(movie.id)}
                     >
                         <ReactPlayer
                             url={`https://www.youtube.com/watch?v=${movieTrailer}`}
@@ -132,11 +132,19 @@ export default function MovieList() {
                             loop={true}
                             volume={0.5}
                         />
-                        <Typography variant="h6">
+                        <Typography variant="h4" sx={{
+                            backgroundColor: 'primary.main',
+                            color: 'primary.contrastText',
+                            fontFamily: 'Bebas Neue',
+                        }}>
                             {movie.title}
                             ({movie.release_date})
                         </Typography>
-                        <Typography variant="body1">
+                        <Typography variant="h6" sx={{ 
+                                backgroundColor:'primary.main',
+                                color: 'primary.contrastText',
+                                fontFamily: 'Roboto',
+                            }}>
                             {movie.overview}
                         </Typography>
                     </StyledPopover>
