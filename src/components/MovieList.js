@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import ReactPlayer from 'react-player';
-import { Paper, Typography, Popover } from '@mui/material';
+import { Paper, Typography, Popover, Tabs, Tab } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 
 import { useData } from '../context/DataContext';
+
+
 
 const StyledPaper = styled(Paper)({
     padding: '1rem',
@@ -15,12 +17,14 @@ const StyledPaper = styled(Paper)({
     backgroundColor: '#171515',
     color: 'white',
     overflow: 'hidden',
-    overflowX: 'scroll',
+    overflowX: 'hidden',
+    WebkitOverflowScrolling: 'touch',
 });
 
 const StyledImg = styled('img')({
     width: '350px',
     height: 'auto',
+    backgroundSize: 'contain',
     position: 'relative',
 });
 
@@ -64,19 +68,33 @@ const StyledPopover = styled(Popover)({
 
 
 export default function MovieList() {
+    const ref = useRef(null);
     const { theme } = useTheme();
     const { movies, movieTitleChange, movieTrailer } = useData();
     const [anchorEl, setAnchorEl] = useState(null);
-    
-    const handleMovieTitle = (event) => {
-        movieTitleChange(event);
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
     };
 
+    // const handleMovieTitle = (event) => {
+    //     movieTitleChange(event);
+    // };
 
-    const handlePopoverOpen = (event) => {
-        console.log(event);
-        setAnchorEl(event);
+    const scroll = (scrollOffset) => {
+        ref.current.scrollLeft += scrollOffset;
     };
+
+    const handleMovieTrailer = (id, title) => {
+        movieTitleChange(title);
+        setAnchorEl(id);
+    };
+
+    // const handlePopoverOpen = (event) => {
+    //     console.log(event);
+    //     setAnchorEl(event);
+    // };
 
     const handlePopoverClose = () => {
         setAnchorEl(null);
@@ -85,7 +103,15 @@ export default function MovieList() {
     const open = Boolean(anchorEl);
 
     return (
-        <StyledPaper>
+        <StyledPaper ref={ref}>
+            <Tabs
+                value={value}
+                onChange={handleChange}
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="scrollable auto tabs example"
+                >
+            
             {movies.map(movie => (
                 <StyledDiv>
                     <StyledImg 
@@ -95,8 +121,7 @@ export default function MovieList() {
                         value={movie.title} // is this what is needed to pass title to the popover and thus trailer?
                         aria-owns={open ? 'mouse-over-popover' : undefined}
                         aria-haspopup="true"
-                        onClick={() => handlePopoverOpen(movie.id)}
-                        onMouseOver={() => handleMovieTitle(movie.title)}
+                        onClick={() => handleMovieTrailer(movie.id, movie.title)}
                         onDoubleClick={() => handlePopoverClose(movie.id)} 
                     />
                     <StyledSpan>
@@ -150,6 +175,7 @@ export default function MovieList() {
                     </StyledPopover>
                 </StyledDiv>
             ))}
+            </Tabs>
         </StyledPaper>
     );
 };

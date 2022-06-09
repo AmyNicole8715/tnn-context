@@ -14,9 +14,8 @@ import youtube from '../apis/youtube/youtube';
 
 const API_URL = 'https://api.themoviedb.org/3/';
 
+
 // Context for Genres
-
-
 const initialState = {
     genres: [],
     genreId: '',

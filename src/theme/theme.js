@@ -20,7 +20,7 @@ const theme = createTheme({
         },
         background: {
           default: '#221F1F',
-        }
+        },
       },
     typography: {
         fontFamily: ['Roboto',
