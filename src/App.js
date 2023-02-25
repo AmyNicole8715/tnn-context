@@ -1,9 +1,7 @@
 import React from 'react';
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider, CssBaseline } from '@mui/material';
 import { StylesProvider } from '@mui/styles';
 import { ThemeProvider as NNStyledProvider } from 'styled-components';
-import { CssBaseline } from '@mui/material';
-
 
 import { LanguageProvider } from './context/LanguageContext';
 import DataProvider from './context/DataContext';
