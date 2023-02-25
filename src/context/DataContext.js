@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useReducer, createContext } from 'react';
+import { useState, useContext, useEffect, useReducer, createContext, useMemo } from 'react';
 
 import { LanguageContext } from './LanguageContext';
 import {
@@ -50,12 +50,21 @@ export function DataProvider ({ children }) {
     useEffect(() => {
         fetchGenres(`${API_URL}genre/movie/list?api_key=${TMDB_API_KEY}&language=${dictionary.setResultLang}`);
     }, [dictionary.setResultLang]);
+    
 
-    const userGenresChange = (selected) => {
-            console.log(selected + ' selected')
-            setGenreId(selected);
-            dispatch ({ type: SET_GENRE_ID, payload: selected });
-        };
+    // const userGenresChange = (selected) => {
+    //         console.log(selected + ' selected')
+    //         setGenreId(selected);
+    //         dispatch ({ type: SET_GENRE_ID, payload: selected });
+    //     };
+
+        // rewrite userGenresChange to use useMemo
+    const userGenresChange = useMemo((selected) => {
+        console.log(selected + ' selected')
+        setGenreId(selected);
+        dispatch ({ type: SET_GENRE_ID, payload: selected });
+    }, []);
+
 
     // fetch movies from TMDB
     const fetchMovies = async (url) => {
@@ -79,11 +88,18 @@ export function DataProvider ({ children }) {
     console.log(state);
 
     // change movie title for youtube search
-    const movieTitleChange = (selected) => {
+    // const movieTitleChange = (selected) => {
+    //     console.log(selected + ' selected')
+    //     setMovieTitle(selected + ` ${dictionary.language} trailer`);
+    //     dispatch ({ type: SET_MOVIE_TITLE, payload: selected });
+    // };
+
+    // rewrite movieTitleChange to use useMemo
+    const movieTitleChange = useMemo((selected) => {
         console.log(selected + ' selected')
         setMovieTitle(selected + ` ${dictionary.language} trailer`);
         dispatch ({ type: SET_MOVIE_TITLE, payload: selected });
-    };
+    }, []);
 
     // fetches movie trailer from youtube
     const fetchMovieTrailer = async (term) => {
