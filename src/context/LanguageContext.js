@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, useMemo } from 'react';
 
 import { languageOptions, dictionaryList } from '../components/languages/index.js';
 
@@ -13,15 +13,24 @@ export function LanguageProvider({ children }) {
   const defaultLanguage = window.localStorage.getItem('rcml-lang');
   const [userLanguage, setUserLanguage] = useState(defaultLanguage || 'enUS');
 
-  const provider = {
-    userLanguage,
-    dictionary: dictionaryList[userLanguage],
+  // rewrite provider to use memoization
+  const provider = useMemo(() => ({ userLanguage, dictionary: dictionaryList[userLanguage],
     userLanguageChange: selected => {
       const newLanguage = languageOptions[selected] ? selected : 'enUS'
       setUserLanguage(newLanguage);
       window.localStorage.setItem('rcml-lang', newLanguage);
     }
-  };
+  }), [userLanguage]);
+
+  // const provider = {
+  //   userLanguage,
+  //   dictionary: dictionaryList[userLanguage],
+  //   userLanguageChange: selected => {
+  //     const newLanguage = languageOptions[selected] ? selected : 'enUS'
+  //     setUserLanguage(newLanguage);
+  //     window.localStorage.setItem('rcml-lang', newLanguage);
+  //   }
+  // };
 
   return (
     <LanguageContext.Provider value={provider}>

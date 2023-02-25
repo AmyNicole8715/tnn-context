@@ -14,21 +14,21 @@ export default function GenreFilterMenu() {
   
   const { genres, userGenresChange } = useData();
 
-  const doBothThings = (popupState, genres) => {
-    popupState.close(genres.id)
+  const doBothThings = (popup, genres) => {
+    popup.close(genres.id)
     userGenresChange(genres.id)
   }
 
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
-      {(popupState) => (
+      {(popup) => (
         <React.Fragment>
-          <Button variant="contained"  {...bindTrigger(popupState)} >
+          <Button variant="contained"  {...bindTrigger(popup)} >
             <Text tid="sortBy" />
           </Button>
-          <Menu {...bindMenu(popupState)}> 
+          <Menu {...bindMenu(popup)}> 
           {genres?.map((genres) => (
-            <MenuItem key={genres.id} value={genres.id} onClick={() => doBothThings(popupState, genres)}>{genres.name}</MenuItem>
+            <MenuItem key={genres.id} value={genres.id} onClick={() => doBothThings(popup, genres)}>{genres.name}</MenuItem>
           ))}
           </Menu>
         </React.Fragment>
